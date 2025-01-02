@@ -1,39 +1,61 @@
 // Select elements
-const taskInput = document.getElementById('task-input');
-const addTaskBtn = document.getElementById('add-task-btn');
-const taskList = document.getElementById('task-list');
+const taskInput = document.getElementById('taskInput');
+const addTaskBtn = document.getElementById('addTaskBtn');
+const taskList = document.getElementById('taskList');
 
 // Function to add a task
 addTaskBtn.addEventListener('click', () => {
-  const taskText = taskInput.value.trim();
+    const taskText = taskInput.value.trim();
 
-  if (taskText !== '') {
-    const listItem = document.createElement('li');
+    if (taskText !== '') {
+        const listItem = document.createElement('li');
 
-    const taskSpan = document.createElement('span');
-    taskSpan.classList.add('task-text');
-    taskSpan.textContent = taskText;
+        const taskSpan = document.createElement('span');
+        taskSpan.classList.add('task-text');
+        taskSpan.textContent = taskText;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('delete-btn');
-    deleteBtn.textContent = 'Delete';
+        const switchContainer = document.createElement('div');
+        switchContainer.classList.add('switch-container');
 
-    deleteBtn.addEventListener('click', () => {
-      taskList.removeChild(listItem);
-    });
+        const switchInput = document.createElement('input');
+        switchInput.type = 'checkbox';
+        switchInput.classList.add('toggle-complete');
 
-    listItem.appendChild(taskSpan);
-    listItem.appendChild(deleteBtn);
+        const switchSlider = document.createElement('span');
+        switchSlider.classList.add('slider');
 
-    taskList.appendChild(listItem);
+        switchInput.addEventListener('change', () => {
+            if (switchInput.checked) {
+                listItem.classList.add('completed');
+            } else {
+                listItem.classList.remove('completed');
+            }
+        });
 
-    taskInput.value = '';
-  }
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('delete-btn');
+        deleteBtn.textContent = 'Delete';
+
+        deleteBtn.addEventListener('click', () => {
+            taskList.removeChild(listItem);
+        });
+
+        switchContainer.appendChild(switchInput);
+        switchContainer.appendChild(switchSlider);
+
+        listItem.appendChild(taskSpan);
+        listItem.appendChild(switchContainer);
+        listItem.appendChild(deleteBtn);
+
+        taskList.appendChild(listItem);
+
+        taskInput.value = '';
+    }
 });
 
 // Handle "Enter" key for adding tasks
 taskInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    addTaskBtn.click();
-  }
+    if (e.key === 'Enter') {
+        addTaskBtn.click();
+    }
 });
